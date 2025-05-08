@@ -1,4 +1,4 @@
-Swagger is under http://localhost/docs
+Swagger is under http://localhost:3000/docs
 
 ## Description
 
