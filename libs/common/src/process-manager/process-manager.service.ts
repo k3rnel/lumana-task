@@ -1,7 +1,28 @@
 import { Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
+import { ApiProperty } from "@nestjs/swagger";
 
 export type ProcessStatus = "pending" | "processing" | "done" | "failed";
+
+export class ProcessInfoDto implements ProcessInfo {
+    @ApiProperty()
+    id: string;
+
+    @ApiProperty()
+    status: ProcessStatus;
+
+    @ApiProperty({ type: String })
+    startedAt: Date;
+
+    @ApiProperty({ type: String, required: false })
+    finishedAt?: Date;
+
+    @ApiProperty({ type: String })
+    updatedAt: Date;
+
+    @ApiProperty({ type: Object })
+    readonly metadata?: Record<string, string>;
+}
 
 export interface ProcessInfo {
     readonly id: string;

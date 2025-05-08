@@ -1,12 +1,14 @@
 import { Controller, Get, NotFoundException, Param, Post, Res, StreamableFile } from "@nestjs/common";
 import { DataHarvesterService } from "./data-harvester.service";
-import { ProcessInfo } from "@app/common";
+import { ProcessInfo, ProcessInfoDto } from "@app/common";
+import { ApiCreatedResponse, ApiOkResponse } from "@nestjs/swagger";
 
 @Controller("harvest")
 export class DataHarvesterController {
     constructor(private readonly dataHarvesterService: DataHarvesterService) {}
 
     @Post("/collect")
+    @ApiCreatedResponse({ description: "The download process has started. Please follow the process ID provided." })
     public async startHarvestingProcess(): Promise<{ processId: string; message: string }> {
         const processId = await this.dataHarvesterService.collect();
 
@@ -20,6 +22,7 @@ export class DataHarvesterController {
      * Checks the status of a download process.
      */
     @Get("/process/:id")
+    @ApiOkResponse({ description: "Provides process instance", type: ProcessInfoDto })
     public async getHarvestStatus(@Param("id") id: string): Promise<ProcessInfo> {
         const process = this.dataHarvesterService.getHarvestStatus(id);
 
@@ -31,6 +34,7 @@ export class DataHarvesterController {
     }
 
     @Get("process/:id/:fileName")
+    @ApiOkResponse({ description: "Downloads prepared file", type: StreamableFile })
     async streamFile(
         @Param("id") processId: string,
         @Param("fileName") fileName: string,

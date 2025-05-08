@@ -26,6 +26,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/microservices": "^11.1.0",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.0",
     "StreamArray": "link:stream-json/streamers/StreamArray",
     "adm-zip": "^0.5.16",
     "amqp-connection-manager": "^4.1.14",

@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { LoggerService } from './logger.service';
+import { Controller, Get } from "@nestjs/common";
+import { LoggerService } from "./logger.service";
+import { Ctx, EventPattern, Payload, RmqContext } from "@nestjs/microservices";
 
 @Controller()
 export class LoggerController {
-  constructor(private readonly loggerService: LoggerService) {}
+    constructor(private readonly loggerService: LoggerService) {}
 
-  @Get()
-  getHello(): string {
-    return this.loggerService.getHello();
-  }
+    @EventPattern("data_harvester_events")
+    async handleServiceAEvents(@Payload() data: any, @Ctx() context: RmqContext) {
+        // TODO Implement logging in appropriate database.
+    }
 }

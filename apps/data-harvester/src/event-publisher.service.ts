@@ -6,7 +6,7 @@ import { ClientProxy } from "@nestjs/microservices";
 export class EventPublisherService {
     constructor(@Inject("RABBITMQ_SERVICE") private readonly client: ClientProxy) {}
 
-    async publishOperation(event: OperationEvent) {
+    async publishOperation(event: OperationEvent): Promise<void> {
         await this.client.emit("data-harvester.operation", event);
     }
 }

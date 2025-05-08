@@ -1,9 +1,10 @@
-import { BadRequestException, Controller, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import * as os from "os";
 import { diskStorage } from "multer";
 import { extname } from "path";
 import { DataSeederService } from "./data-seeder.service";
+import { ApiOkResponse } from "@nestjs/swagger";
 
 @Controller("seeder")
 export class DataSeederController {
@@ -28,7 +29,11 @@ export class DataSeederController {
             },
         }),
     )
-    async handleUpload(@UploadedFile() file: Express.Multer.File) {
+    @ApiOkResponse({ description: "Uploads the file for ingestion." })
+    async handleUpload(@UploadedFile() file: Express.Multer.File): Promise<{
+        message: string;
+        path: string;
+    }> {
         if (!file) throw new BadRequestException("File upload failed or missing");
 
         await this.seederService.ingestFile(file.path);
